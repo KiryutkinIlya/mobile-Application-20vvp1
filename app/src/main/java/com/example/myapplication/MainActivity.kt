@@ -6,6 +6,10 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.widget.Button
 import android.widget.TextView
+import android.util.DisplayMetrics
+
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,12 +25,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         button1 = findViewById<Button>(R.id.buttonMain)
         button2 = findViewById<Button>(R.id.button2)
+        val heightButton2 = button1.getY()+1090
+        val widthButton2 = button1.getX()+325
+
         textCounter = findViewById<TextView>(R.id.textCountTap)
         buttonRestart = findViewById<Button>(R.id.buttonRestart)
         button1.setOnClickListener {
             counter++;
             textCounter.text = counter.toString()
         }
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val height = displayMetrics.heightPixels
+        val width = displayMetrics.widthPixels
         button1.setOnTouchListener { view, motionEvent ->
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -34,6 +45,8 @@ class MainActivity : AppCompatActivity() {
                     counter++;
                     textCounter.text = counter.toString()
                     button1.text="Нажато"
+                    button2.setX(widthButton2)
+                    button2.setY(heightButton2)
                     true
                 }
                 MotionEvent.ACTION_UP -> {
@@ -46,6 +59,8 @@ class MainActivity : AppCompatActivity() {
         button2.setOnClickListener {
             counter++;
             textCounter.text = counter.toString()
+            button2.setX((0..(width-button2.width)).random().toFloat());
+            button2.setY((0..(height-button2.height)).random().toFloat());
         }
         buttonRestart.setOnClickListener {
             counter = 0
